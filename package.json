@@ -1,6 +1,6 @@
 {
   "name": "gulp-any-standard",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "gulp plugin for checking JavaScript code with the standard syntax",
   "author": "Daniel Cousens",
   "license": "MIT",
