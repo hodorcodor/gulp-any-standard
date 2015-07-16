@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/dcousens/gulp-any-standard.png?branch=master)](https://travis-ci.org/dcousens/gulp-any-standard)
 [![NPM version](https://badge.fury.io/js/gulp-any-standard.png)](http://badge.fury.io/js/gulp-any-standard)
 
-[Standard](https://github.com/feross/standard/) linter for gulp, using dependency injection to instantiate *any* standard.
+[Standard](https://github.com/feross/standard/) linter for gulp, using dependency injection to allow use of *any* standard.
 
 
 ## Usage
