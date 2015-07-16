@@ -1,10 +1,9 @@
 var PLUGIN_NAME = require('./package.json').name
 var defaultReporter = require('./reporters/stylish')
 var gutil = require('gulp-util')
-var standard = require('standard')
 var through2 = require('through2')
 
-function gulpStandard (opts) {
+function gulpStandard (standard, opts) {
   opts = opts || {}
 
   function processFile (file, enc, cb) {
