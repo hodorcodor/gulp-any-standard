@@ -3,13 +3,14 @@
 var assert = require('assert')
 var fs = require('fs')
 var gutil = require('gulp-util')
-var standard = require('../')
+var gulpStandard = require('../')
+var standard = require('standard')
 
 var testFile1 = fs.readFileSync('test/fixtures/testFile1.js')
 
 describe('gulp-standard', function () {
   it('should lint files', function (done) {
-    var stream = standard()
+    var stream = gulpStandard(standard)
     var fakeFile = new gutil.File({
       base: 'test/fixtures',
       cwd: 'test/',
