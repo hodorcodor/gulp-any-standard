@@ -1,36 +1,65 @@
 {
-  "name": "gulp-standard",
-  "version": "4.5.3",
+  "name": "gulp-any-standard",
+  "version": "0.0.1",
   "description": "gulp plugin for checking JavaScript code with the standard syntax",
-  "main": "index.js",
-  "keywords": [
-    "standard",
-    "gulpplugin"
-  ],
-  "scripts": {
-    "test": "mocha"
-  },
+  "author": "Daniel Cousens",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/emgeee/gulp-standard"
+    "url": "https://github.com/dcousens/gulp-any-standard.git"
   },
-  "author": "Matt Green <mgreen9@gmail.com> (http://emgeee.com/)",
-  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/emgeee/gulp-standard/issues"
+    "url": "https://github.com/dcousens/gulp-any-standard/issues"
   },
-  "homepage": "https://github.com/emgeee/gulp-standard",
+  "homepage": "https://github.com/dcousens/gulp-any-standard",
+  "keywords": [
+    "gulp-any-standard",
+    "gulp",
+    "gulpplugin",
+    "plugin",
+    "happiness",
+    "semistandard",
+    "standard"
+  ],
+  "main": "lib/index.js",
+  "files": [
+    "lib/"
+  ],
+  "scripts": {
+    "build": "babel -d lib/ src/",
+    "coverage": "mocha --require blanket -R travis-cov",
+    "coverage-local": "mocha --require blanket -R html-cov",
+    "prepublish": "npm run build",
+    "standard": "standard",
+    "test": "npm run standard && npm run unit",
+    "unit": "mocha --compilers js:babel/register"
+  },
+  "config": {
+    "blanket": {
+      "pattern": [""],
+      "data-cover-never": ["node_modules", "test"]
+    },
+    "travis-cov": {
+      "threshold": 90
+    }
+  },
+  "standard": {
+    "ignore": [
+      "lib/"
+    ]
+  },
   "dependencies": {
     "app-root-path": "^1.0.0",
     "colors": "^1.1.2",
     "gulp-util": "^3.0.6",
     "log-symbols": "^1.0.2",
     "path": "^0.11.14",
-    "standard": "^4.5.3",
     "through2": "^2.0.0"
   },
   "devDependencies": {
-    "mocha": "^2.2.5",
-    "should": "^7.0.2"
+    "blanket": "*",
+    "mocha": "*",
+    "standard": "*",
+    "travis-cov": "*"
   }
 }
