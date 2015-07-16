@@ -36,8 +36,13 @@
   },
   "config": {
     "blanket": {
-      "pattern": [""],
-      "data-cover-never": ["node_modules", "test"]
+      "pattern": [
+        ""
+      ],
+      "data-cover-never": [
+        "node_modules",
+        "test"
+      ]
     },
     "travis-cov": {
       "threshold": 90
@@ -54,7 +59,8 @@
     "gulp-util": "^3.0.6",
     "log-symbols": "^1.0.2",
     "path": "^0.11.14",
-    "through2": "^2.0.0"
+    "through2": "^2.0.0",
+    "xtend": "^4.0.0"
   },
   "devDependencies": {
     "blanket": "*",
