@@ -48,7 +48,8 @@
   },
   "standard": {
     "ignore": [
-      "lib/"
+      "lib/",
+      "test/fixtures/"
     ]
   },
   "dependencies": {
