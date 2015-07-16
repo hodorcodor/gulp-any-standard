@@ -3,32 +3,28 @@ var defaultReporter = require('./reporters/stylish')
 var gutil = require('gulp-util')
 var through2 = require('through2')
 
-function gulpStandard (standard, opts) {
+module.exports = function (standard, opts) {
   opts = opts || {}
 
-  function processFile (file, enc, cb) {
-    if (file.isNull()) {
-      return cb(null, file)
-    }
-
+  return through2.obj(function (file, enc, callback) {
+    if (file.isNull()) return callback(null, file)
     if (file.isStream()) {
       this.emit('error', new gutil.PluginError(PLUGIN_NAME, 'Streams are not supported!'))
-      return cb()
+
+      return callback()
     }
 
     standard.lintText(String(file.contents), opts, function (err, data) {
-      if (err) {
-        return cb(err)
-      }
-      file.standard = data
-      cb(null, file)
-    })
-  }
+      if (err) return callback(err)
 
-  return through2.obj(processFile)
+      file.standard = data
+
+      callback(null, file)
+    })
+  })
 }
 
-gulpStandard.reporter = function (reporter, opts) {
+module.exports.reporter = function (reporter, opts) {
   // Load default reporter
   if (reporter === 'default') return defaultReporter(opts)
 
@@ -49,5 +45,3 @@ gulpStandard.reporter = function (reporter, opts) {
     } catch (err) {}
   }
 }
-
-module.exports = gulpStandard
