@@ -26,13 +26,11 @@
     "lib/"
   ],
   "scripts": {
-    "build": "babel -d lib/ src/",
     "coverage": "mocha --require blanket -R travis-cov",
     "coverage-local": "mocha --require blanket -R html-cov",
-    "prepublish": "npm run build",
     "standard": "standard",
     "test": "npm run standard && npm run unit",
-    "unit": "mocha --compilers js:babel/register"
+    "unit": "mocha"
   },
   "config": {
     "blanket": {
