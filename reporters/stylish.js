@@ -1,44 +1,37 @@
 var PLUGIN_NAME = require('../package.json').name
 var appRoot = require('app-root-path')
-var colors = require('colors/safe')
+var chalk = require('chalk')
 var gutil = require('gulp-util')
-var logSymbols = require('log-symbols')
 var path = require('path')
 var through2 = require('through2')
-var xtend = require('xtend')
 
 function Stylish (options) {
-  var opts = xtend({
-    breakOnError: false,
-    breakOnWarning: false
-  }, options)
-
   var totalErrorCount = 0
   var totalWarningCount = 0
 
   // File specific reporter
   function reportFile (filepath, data) {
-    var lines = []
-
-    // Filename
-    lines.push(colors.magenta.underline(path.relative(appRoot.path, filepath)))
+    var lines = [
+      chalk.magenta.underline(path.relative(appRoot.path, filepath))
+    ]
 
     // Loop file specific error/warning messages
     data.results.forEach(function (file) {
       file.messages.forEach(function (msg) {
-        var line = colors.yellow('line ' + msg.line + ':' + msg.column) + '\t' + colors.cyan(msg.message)
-        lines.push(line)
+        lines.push(
+          chalk.yellow('line ' + msg.line + ':' + msg.column) + '\t' + chalk.cyan(msg.message)
+        )
       })
     })
 
     // Error/Warning count
-    lines.push(logSymbols.error + ' ' + colors.red(data.errorCount + ' error' + (data.errorCount === 1 ? 's' : '')) + '\t' + logSymbols.warning + ' ' + colors.yellow(data.warningCount + ' warning' + (data.errorCount === 1 ? 's' : '')))
+    lines.push(chalk.red(data.errorCount + ' error' + (data.errorCount === 1 ? 's' : '')) + '\t' + chalk.yellow(data.warningCount + ' warning' + (data.errorCount === 1 ? 's' : '')))
 
     return lines.join('\n') + '\n'
   }
 
-  console.log(colors.green('Standard linter results'))
-  console.log('======================================\n')
+  gutil.log(chalk.green('Standard linter results'))
+  gutil.log('======================================\n')
 
   var stream = through2.obj(function (file, enc, callback) {
     if (file.isNull()) return callback(null, file)
@@ -53,28 +46,32 @@ function Stylish (options) {
       totalErrorCount += file.standard.errorCount
       totalWarningCount += file.standard.warningCount
 
-      console.log(reportFile(file.path, file.standard))
+      gutil.log(reportFile(file.path, file.standard))
     }
 
     callback()
   })
 
   stream.on('end', function () {
-    if (totalErrorCount === 0 && totalWarningCount === 0) {
-      console.log(logSymbols.success + ' ' + colors.green('All OK!'))
-
-    } else {
-      console.log('======================================')
-      console.log(logSymbols.error + colors.red(' Errors total: ' + totalErrorCount))
-      console.log(logSymbols.warning + colors.yellow(' Warnings total: ' + totalWarningCount) + '\n')
+    if (!totalErrorCount && !totalWarningCount) {
+      gutil.log(chalk.green('Success'))
+      return
     }
 
-    // If user wants gulp to break execution on reported errors or warnings
-    if (totalErrorCount && opts.breakOnError) {
-      this.emit('error', new gutil.PluginError(PLUGIN_NAME, 'Linter errors occurred!'))
+    if (totalErrorCount) {
+      if (options.breakOnError) {
+        this.emit('error', new gutil.PluginError(PLUGIN_NAME, 'Linter errors occurred!'))
+      }
+
+      gutil.log(chalk.red('Errors: ' + totalErrorCount))
     }
-    if (totalErrorCount && opts.breakOnWarning) {
-      this.emit('error', new gutil.PluginError(PLUGIN_NAME, 'Linter warnings occurred!'))
+
+    if (totalWarningCount) {
+      if (options.breakOnWarning) {
+        this.emit('error', new gutil.PluginError(PLUGIN_NAME, 'Linter warnings occurred!'))
+      }
+
+      gutil.log(chalk.yellow('Warnings: ' + totalWarningCount))
     }
   })
 
