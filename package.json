@@ -21,9 +21,10 @@
     "semistandard",
     "standard"
   ],
-  "main": "lib/index.js",
+  "main": "index.js",
   "files": [
-    "lib/"
+    "index.js",
+    "reporter/"
   ],
   "scripts": {
     "coverage": "mocha --require blanket -R travis-cov",
