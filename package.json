@@ -24,7 +24,7 @@
   "main": "index.js",
   "files": [
     "index.js",
-    "reporter/"
+    "reporters"
   ],
   "scripts": {
     "coverage": "mocha --require blanket -R travis-cov",
